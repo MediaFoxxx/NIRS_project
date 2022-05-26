@@ -48,7 +48,7 @@ def telegram_bot():
                 VkWall.time_print("Nothing to delete.")
             else:
                 VkWall.save_json(wall.all_posts, 'all_posts', is_sorted=True)
-                VkWall.save_json(wall.all_posts_text, 'all_posts_text')
+                VkWall.save_json(wall.all_posts_text, 'all_posts_text', is_sorted=True)
 
             time.sleep(3600 - int(time.time()) % 3600 + 13*60)
 
@@ -135,7 +135,7 @@ def telegram_bot():
                     VkWall.time_print(ex)
                 finally:
                     VkWall.save_json(wall.all_posts, 'all_posts', is_sorted=True)
-                    VkWall.save_json(wall.all_posts_text, 'all_posts_text')
+                    VkWall.save_json(wall.all_posts_text, 'all_posts_text', is_sorted=True)
 
             time.sleep(300 - int(time.time()) % 300)
 
@@ -193,7 +193,7 @@ def telegram_bot():
                     num += 1
 
                 VkWall.save_json(wall.all_posts, 'all_posts', is_sorted=True)
-                VkWall.save_json(wall.all_posts_text, 'all_posts_text')
+                VkWall.save_json(wall.all_posts_text, 'all_posts_text', is_sorted=True)
             VkWall.time_print("'Clean data' function has been completed successfully!")
             time.sleep(3600*24 - int(time.time()) % 3600 + 3*60)
 

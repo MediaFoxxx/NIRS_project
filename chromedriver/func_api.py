@@ -145,7 +145,7 @@ class VkWall:
                     self._make_message_from_vkpost(post, False)
 
         self.save_json(self.new_posts, 'new_posts', is_sorted=True)
-        self.save_json(self.all_posts_text, 'all_posts_text')
+        self.save_json(self.all_posts_text, 'all_posts_text', is_sorted=True)
         self.save_json(self.last_posts, 'last_posts')
 
         return fixed
