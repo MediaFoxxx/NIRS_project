@@ -41,7 +41,7 @@ class VkWall:
 
         if is_sorted:
             with open(f"data/{name}.json", 'w', encoding="utf-8") as f:
-                json.dump(dict(sorted(json_file.items(), key=lambda x: x[0])), f, indent=4, ensure_ascii=False)
+                json.dump(dict(sorted(json_file.items(), key=lambda x: int(x[0]))), f, indent=4, ensure_ascii=False)
                 # json.dump(json_file, f, indent=4, ensure_ascii=False, sort_keys=True)
         else:
             with open(f"data/{name}.json", 'w', encoding="utf-8") as f:
@@ -81,6 +81,11 @@ class VkWall:
                     link_url = link['url']
                     if link_url not in text:
                         text += f"\n\n<a href='{link_url}'>{link['title']}</a>"
+
+                if attach['type'] == 'video':
+                    video = attach['video']
+                    video_url = 'https://vk.com/video%r_%r' % (video['owner_id'], video['id'])
+                    text += f"\n\n<a href='{video_url}'>{video['title']}</a>"
 
         text = self._hidden_links(text)
         return text
