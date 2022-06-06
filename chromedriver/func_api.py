@@ -15,8 +15,8 @@ class VkWall:
         """Инициализирует объект класса."""
 
         self.settings = Settings()
-        self.vk_session = vk_api.VkApi(token=self.settings.vk_token)
-        self.vk = self.vk_session.get_api()
+        self._vk_session = vk_api.VkApi(token=self.settings.vk_token)
+        self.vk = self._vk_session.get_api()
         self.wall = self.vk.wall.get(domain=self.settings.group_domain, count=self.settings.count_last_posts)["items"]
 
         with open("data/all_posts.json", "r", encoding="utf-8") as f:
@@ -162,7 +162,8 @@ class VkWall:
             bot.unpin_chat_message(self.settings.chat_id)
             self.time_print('Post was unpinned.')
         except Exception as ex:
-            self.time_print(ex)
+            pass
+            # self.time_print(ex)
 
     @staticmethod
     def time_print(text):
