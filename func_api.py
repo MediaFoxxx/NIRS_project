@@ -31,7 +31,7 @@ class VkWall:
     def clean_directory(name='audio'):
         """Отчистка папки от файлов"""
 
-        files = glob.glob(f'C:\\Users\\bushu\\PycharmProjects\\Project\\chromedriver\\data\\{name}\\*')
+        files = glob.glob(f'/data\\{name}\\*')
         for file in files:
             os.remove(file)
 
