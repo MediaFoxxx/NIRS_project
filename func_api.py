@@ -107,7 +107,7 @@ class VkWall:
                         if photo['type'] in ('z', 'y', 'x'):
                             self.new_posts[post['id']]["wall_post_photo"] = f'{post["id"]}_photo'
 
-                            photo_jpg = requests.get(url=photo['url'], headers=self.settings.headers)
+                            photo_jpg = requests.get(url=photo['url'])
                             with open(f'data/photo/{post["id"]}_photo.jpg', 'wb') as f:
                                 f.write(photo_jpg.content)
 
@@ -117,7 +117,7 @@ class VkWall:
                     audio = attach['audio']
                     self.new_posts[post['id']]["wall_post_audio"] = f"{audio['artist']} - {audio['title']}"
 
-                    audio_mp3 = requests.get(url=audio['url'], headers=self.settings.headers)
+                    audio_mp3 = requests.get(url=audio['url'])
                     with open(f'data/audio/{post["id"]}_audio.mp3', 'wb') as f:
                         f.write(audio_mp3.content)
 
@@ -125,7 +125,7 @@ class VkWall:
                     doc = attach['doc']
                     self.new_posts[post['id']]["wall_post_doc"] = doc['title']
 
-                    doc_ext = requests.get(url=doc['url'], headers=self.settings.headers)
+                    doc_ext = requests.get(url=doc['url'])
                     with open(f'data/docs/{post["id"]}_{doc["title"]}', 'wb') as f:
                         f.write(doc_ext.content)
 
