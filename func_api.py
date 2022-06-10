@@ -1,6 +1,8 @@
 import vk_api
-import json
 import requests
+from pytz import timezone
+from datetime import datetime
+import json
 import time
 import re
 import glob
@@ -167,4 +169,8 @@ class VkWall:
 
     @staticmethod
     def time_print(text):
-        print(f"{time.strftime('%H:%M:%S', time.localtime())} - {text}")
+        """Функция вывода времени и текста для лога"""
+        time_z_ms = timezone('Europe/Moscow')
+        dt_ms = datetime.now(time_z_ms)
+
+        print(f"{dt_ms.strftime('%H:%M:%S')} - {text}")
