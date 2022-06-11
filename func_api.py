@@ -3,7 +3,6 @@ import requests
 from pytz import timezone
 from datetime import datetime
 import json
-import time
 import re
 import glob
 import os
