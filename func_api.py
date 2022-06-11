@@ -96,11 +96,12 @@ class VkWall:
     def _make_message_from_vkpost(self, post, fixed):
         """Создание макета сообщения для телеграма из поста в вк"""
 
-        self.new_posts[post['id']] = {}
-        self.new_posts[post['id']]["Fixed"] = fixed
-        self.new_posts[post['id']]["wall_post_photo"] = None
-        self.new_posts[post['id']]["wall_post_audio"] = None
-        self.new_posts[post['id']]["wall_post_doc"] = None
+        new_post = {
+            "Fixed": fixed,
+            "wall_post_photo": None,
+            "wall_post_audio": None,
+            "wall_post_doc": None,
+        }
 
         if 'attachments' in post.keys():
             for attach in post['attachments']:
@@ -108,7 +109,7 @@ class VkWall:
                 if attach['type'] == 'photo':
                     for photo in attach['photo']['sizes']:
                         if photo['type'] in ('z', 'y', 'x'):
-                            self.new_posts[post['id']]["wall_post_photo"] = f'{post["id"]}_photo'
+                            new_post["wall_post_photo"] = f'{post["id"]}_photo'
 
                             photo_jpg = requests.get(url=photo['url'])
                             with open(f'data/photo/{post["id"]}_photo.jpg', 'wb') as f:
@@ -118,7 +119,7 @@ class VkWall:
 
                 if attach['type'] == 'audio' and attach['audio']['url'] != '':
                     audio = attach['audio']
-                    self.new_posts[post['id']]["wall_post_audio"] = f"{audio['artist']} - {audio['title']}"
+                    new_post["wall_post_audio"] = f"{audio['artist']} - {audio['title']}"
 
                     audio_mp3 = requests.get(url=audio['url'])
                     with open(f'data/audio/{post["id"]}_audio.mp3', 'wb') as f:
@@ -126,13 +127,14 @@ class VkWall:
 
                 if attach['type'] == 'doc':
                     doc = attach['doc']
-                    self.new_posts[post['id']]["wall_post_doc"] = doc['title']
+                    new_post["wall_post_doc"] = doc['title']
 
                     doc_ext = requests.get(url=doc['url'])
                     with open(f'data/docs/{post["id"]}_{doc["title"]}', 'wb') as f:
                         f.write(doc_ext.content)
 
-        self.new_posts[post['id']]["wall_post_text"] = self.make_text_for_message(post)
+        new_post["wall_post_text"] = self.make_text_for_message(post)
+        self.new_posts[post['id']] = new_post
 
     def get_last_posts(self):
         """Получение последних постов со стены группы вк."""
