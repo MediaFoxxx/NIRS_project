@@ -12,13 +12,15 @@ from settings import Settings
 class VkWall:
     """Класс поста из вк."""
 
+    settings = Settings()
+
     def __init__(self):
         """Инициализирует объект класса."""
 
-        self.settings = Settings()
-        self._vk_session = vk_api.VkApi(token=self.settings.vk_token)
+        self._vk_session = vk_api.VkApi(token=VkWall.settings.vk_token)
         self.vk = self._vk_session.get_api()
-        self.wall = self.vk.wall.get(domain=self.settings.group_domain, count=self.settings.count_last_posts)["items"]
+        self.wall = self.vk.wall.get(domain=VkWall.settings.group_domain,
+                                     count=VkWall.settings.count_last_posts)["items"]
 
         with open("data/all_posts.json", "r", encoding="utf-8") as f:
             self.all_posts = json.load(f)
@@ -160,7 +162,7 @@ class VkWall:
         """Открепляем закрепленный пост."""
 
         try:
-            bot.unpin_chat_message(self.settings.chat_id)
+            bot.unpin_chat_message(VkWall.settings.chat_id)
             self.time_print('Post was unpinned.')
         except Exception as ex:
             pass

@@ -35,13 +35,13 @@ def check_delete_messages(message):
             with open("data/last_posts.json", "r") as f:
                 last_posts = json.load(f)
 
-            for post_id in list(reversed(wall.all_posts))[:wall.settings.count_checking_deleted_posts]:
+            for post_id in list(reversed(wall.all_posts))[:settings.count_checking_deleted_posts]:
                 if post_id not in last_posts:
                     tf = False
                     VkWall.time_print(f'{wall.all_posts[post_id]} was deleted!')
                     for mes in wall.all_posts[post_id]:
                         if mes != 'time':
-                            bot.delete_message(chat_id=wall.settings.chat_id, message_id=wall.all_posts[post_id][mes])
+                            bot.delete_message(chat_id=settings.chat_id, message_id=wall.all_posts[post_id][mes])
                     del wall.all_posts[post_id]
                     del wall.all_posts_text[post_id]
 
@@ -94,20 +94,20 @@ def send_messages(message):
                             with open(f"data/photo/{post_id}_photo.jpg", "rb") as f:
                                 photo = f.read()
                             if len(post_text) > 1024:
-                                wall.all_posts[post_id]['photo'] = bot.send_photo(wall.settings.chat_id,
+                                wall.all_posts[post_id]['photo'] = bot.send_photo(settings.chat_id,
                                                                                   photo=photo).message_id
-                                wall.all_posts[post_id]['text'] = bot.send_message(wall.settings.chat_id,
+                                wall.all_posts[post_id]['text'] = bot.send_message(settings.chat_id,
                                                                                    text=post_text, parse_mode="HTML",
                                                                                    disable_web_page_preview=False,
                                                                                    reply_to_message_id=
                                                                                    wall.all_posts[post_id]
                                                                                    ['photo']).message_id
                             else:
-                                wall.all_posts[post_id]['text'] = bot.send_photo(wall.settings.chat_id, photo=photo,
+                                wall.all_posts[post_id]['text'] = bot.send_photo(settings.chat_id, photo=photo,
                                                                                  caption=post_text,
                                                                                  parse_mode="HTML").message_id
                         else:
-                            wall.all_posts[post_id]['text'] = bot.send_message(wall.settings.chat_id, text=post_text,
+                            wall.all_posts[post_id]['text'] = bot.send_message(settings.chat_id, text=post_text,
                                                                                parse_mode="HTML",
                                                                                disable_web_page_preview=
                                                                                False).message_id
@@ -115,7 +115,7 @@ def send_messages(message):
                         if post_audio is not None:
                             with open(f"data/audio/{post_id}_audio.mp3", "rb") as f:
                                 audio = f.read()
-                            wall.all_posts[post_id]['audio'] = bot.send_audio(wall.settings.chat_id, audio=audio,
+                            wall.all_posts[post_id]['audio'] = bot.send_audio(settings.chat_id, audio=audio,
                                                                               title=post_audio, reply_to_message_id=
                                                                               wall.all_posts[post_id]
                                                                               ['text']).message_id
@@ -123,7 +123,7 @@ def send_messages(message):
                         if post_doc is not None:
                             with open(f"data/docs/{post_id}_{post_doc}", "rb") as f:
                                 document = f.read()
-                            wall.all_posts[post_id]['doc'] = bot.send_document(wall.settings.chat_id,
+                            wall.all_posts[post_id]['doc'] = bot.send_document(settings.chat_id,
                                                                                document=document, reply_to_message_id=
                                                                                wall.all_posts[post_id]['text'],
                                                                                visible_file_name=post_doc).message_id
@@ -131,7 +131,7 @@ def send_messages(message):
                         if new_posts[post_id]["Fixed"]:
                             # Проверить еще есть ли закрепление и удалить закрепление
                             wall.unpin_message(bot)
-                            bot.pin_chat_message(wall.settings.chat_id, message_id=wall.all_posts[post_id]['text'],
+                            bot.pin_chat_message(settings.chat_id, message_id=wall.all_posts[post_id]['text'],
                                                  disable_notification=True)
 
                         wall.all_posts[post_id]['time'] = int(time.time())
@@ -197,11 +197,11 @@ def clean_data(message):
             wall.clean_directory('docs')
             wall.clean_directory('photo')
 
-            if len(wall.all_posts_text) > wall.settings.count_safe_posts:
+            if len(wall.all_posts_text) > settings.count_safe_posts:
                 num = 0
                 apt_d = list(wall.all_posts_text)
                 for key in apt_d:
-                    if num < len(apt_d) - wall.settings.count_safe_posts:
+                    if num < len(apt_d) - settings.count_safe_posts:
                         del wall.all_posts[key]
                         del wall.all_posts_text[key]
                     else:
